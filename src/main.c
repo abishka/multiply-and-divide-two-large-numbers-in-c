@@ -14,6 +14,8 @@
 #define MAXL 50
 
 //Function
+void Difference();
+void division();
 void multiplication();
 void clrscr();
 
@@ -27,6 +29,8 @@ int main()
 
         printf("1. Multiplication\n");
         printf("2. Division\n");
+        printf("3. Difference\n");
+        printf("4. addition\n");
         printf("0. Exit\n\n");
 
         puts("**********************************************");
@@ -42,7 +46,11 @@ int main()
             break;
 
         case 2:
+            division();
+            break;
 
+        case 3:
+            Difference();
             break;
 
         case 0:
@@ -54,6 +62,85 @@ int main()
     return 0;
 }
 
+void Difference()
+{
+    char result[MAXL + 1];
+
+    char n1[MAXL + 1]; // Plus one is for null operator!
+    memset(n1, 0, MAXL * sizeof(char));
+    char n2[MAXL + 1];
+    memset(n2, 0, MAXL * sizeof(char));
+
+    printf("**************************    multiplication   ****************************\n");
+
+    puts("Please enter the first number:");
+    scanf(" %s", n1);
+    puts("Please enter the second number:");
+    scanf(" %s", n2);
+
+    // Length of numbers
+    int L1 = strlen(n1);
+    int L2 = strlen(n2);
+
+    // Put the longer number first
+    char temp[MAXL + 1];
+    if (L1 < L2)
+    {
+        strcpy(temp, n1);
+        strcpy(n1, n2);
+        strcpy(n2, temp);
+        L1 = strlen(n1);
+        L2 = strlen(n2);
+    }
+
+    clrscr();
+
+    // print first number
+    for (int i = 0; i < +2; i++)
+        printf(" ");
+    printf("%s\n", n1);
+
+    // print second number
+    printf("- ");
+    for (int i = 0; i < (L1 - L2); i++)
+        printf(" ");
+    printf("%s\n", n2);
+
+    // print _____________ underline
+    for (int i = 0; i < (L1 + 2); i++)
+        printf("_");
+
+    int num1[L1 + 1];
+    int num2[L1 + 1];
+
+    int carry = 0;
+    printf(" ok1\n");
+
+    for (int i = 1; i <= L1; i++)
+    {
+        signed int sub;
+        // Do school mathematics, compute difference of
+        // current digits
+
+        if (L2 - i >= 0)
+            sub = ((n1[L1 - i] - '0') - (n2[L2 - i] - '0') - carry);
+
+        else
+            sub = ((n1[L1 - i] - '0') - carry);
+
+        if (sub < 0)
+        {
+            sub = sub + 10;
+            carry = 1;
+        }
+        else
+            carry = 0;
+
+        result[L1 - i] = (sub + '0');
+    }
+
+    printf("  %s\n", result);
+}
 void multiplication()
 {
     char n1[MAXL + 1]; // Plus one is for null operator!
@@ -218,4 +305,51 @@ void clrscr(void)
 #else
     system("clear");
 #endif
+}
+
+void division()
+{
+
+    char n1[MAXL + 1]; // Plus one is for null operator!
+    memset(n1, 0, MAXL * sizeof(char));
+    char n2[MAXL + 1];
+    memset(n2, 0, MAXL * sizeof(char));
+
+    printf("**************************    division    ****************************\n");
+
+    puts("Please enter the first number:");
+    scanf(" %s", n1);
+    puts("Please enter the second number:");
+    scanf(" %s", n2);
+
+    // Length of numbers
+    int L1 = strlen(n1);
+    int L2 = strlen(n2);
+
+    clrscr();
+
+    printf("   %s", n1);
+
+    printf(" | %s\n", n2);
+
+    for (int i = 0; i < (L1) + 4; i++)
+        printf(" ");
+
+    printf("|");
+    for (int i = 0; i < (L2) + 2; i++)
+        printf("_", n2);
+
+    if (L2 > L1)
+    {
+        printf("\n-  %s", "0");
+
+        for (int i = 0; i < (L1) + 1; i++)
+            printf(" ");
+        printf("0\n");
+
+        for (int i = 0; i < (L1) + 4; i++)
+            printf("_");
+
+        printf("\n   %s", n1);
+    }
 }
