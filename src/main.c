@@ -14,10 +14,14 @@
 #define MAXL 50
 
 //Function
-void Difference();
+
 void division();
 void multiplication();
 void clrscr();
+void give_two_str_numb(char n1[], char n2[]);
+void Difference(char n1[], char n2[], char result[], int *neg);
+
+void Difference_and_print();
 
 int main()
 {
@@ -25,6 +29,7 @@ int main()
 
     while (1)
     {
+
         printf("\n\n\n*************** actions ***************\n\n");
 
         printf("1. Multiplication\n");
@@ -50,34 +55,32 @@ int main()
             break;
 
         case 3:
-            Difference();
-            break;
 
-        case 0:
-            return 0;
+            Difference_and_print();
+
             break;
+        default:
+            exit(0);
         }
     }
 
     return 0;
 }
 
-void Difference()
+
+void give_two_str_numb(char n1[], char n2[])
 {
-    char result[MAXL + 1];
-
-    char n1[MAXL + 1]; // Plus one is for null operator!
-    memset(n1, 0, MAXL * sizeof(char));
-    char n2[MAXL + 1];
-    memset(n2, 0, MAXL * sizeof(char));
-
-    printf("**************************    multiplication   ****************************\n");
-
     puts("Please enter the first number:");
     scanf(" %s", n1);
     puts("Please enter the second number:");
     scanf(" %s", n2);
+}
 
+void Difference(char n1[], char n2[], char result[], int *neg)
+{
+
+    int neg_check1 = 0, neg_check2 = 0;
+    *neg = 0;
     // Length of numbers
     int L1 = strlen(n1);
     int L2 = strlen(n2);
@@ -91,36 +94,17 @@ void Difference()
         strcpy(n2, temp);
         L1 = strlen(n1);
         L2 = strlen(n2);
+        neg_check1 = 1;
     }
-
-    clrscr();
-
-    // print first number
-    for (int i = 0; i < +2; i++)
-        printf(" ");
-    printf("%s\n", n1);
-
-    // print second number
-    printf("- ");
-    for (int i = 0; i < (L1 - L2); i++)
-        printf(" ");
-    printf("%s\n", n2);
-
-    // print _____________ underline
-    for (int i = 0; i < (L1 + 2); i++)
-        printf("_");
 
     int num1[L1 + 1];
     int num2[L1 + 1];
 
     int carry = 0;
-    printf(" ok1\n");
 
     for (int i = 1; i <= L1; i++)
     {
         signed int sub;
-        // Do school mathematics, compute difference of
-        // current digits
 
         if (L2 - i >= 0)
             sub = ((n1[L1 - i] - '0') - (n2[L2 - i] - '0') - carry);
@@ -132,15 +116,58 @@ void Difference()
         {
             sub = sub + 10;
             carry = 1;
+            neg_check2 = 1;
         }
         else
+        {
             carry = 0;
-
+            neg_check2 = 0;
+        }
         result[L1 - i] = (sub + '0');
     }
+    if (neg_check2)
+    {
+        int my_null;
+        Difference(n2, n1, result, &my_null);
+    }
 
-    printf("  %s\n", result);
+    if (neg_check1 || neg_check2)
+        *neg = 1;
 }
+void Difference_and_print()
+{
+    char str_num1[MAXL + 1];
+    memset(str_num1, 0, MAXL * sizeof(char));
+
+    char str_num2[MAXL + 1];
+    memset(str_num2, 0, MAXL * sizeof(char));
+
+    char result[MAXL + 1];
+    memset(result, 0, MAXL * sizeof(char));
+
+    int signbit;
+    clrscr();
+    printf("********************    Difference two string   **********************\n");
+
+    give_two_str_numb(str_num1, str_num2);
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // print first number
+    printf("\n\n%s", str_num1);
+
+    // print second number
+    printf(" - ");
+    printf("%s =  ", str_num2);
+
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    Difference(str_num1, str_num2, result, &signbit);
+    if (signbit)
+        printf("-");
+    else
+        printf("+");
+
+    printf("%s\n", result);
+}
+
 void multiplication()
 {
     char n1[MAXL + 1]; // Plus one is for null operator!
@@ -298,15 +325,6 @@ void multiplication()
     }
 }
 
-void clrscr(void)
-{
-#if defined(_WIN32) || defined(_WIN64)
-    system("cls");
-#else
-    system("clear");
-#endif
-}
-
 void division()
 {
 
@@ -352,4 +370,13 @@ void division()
 
         printf("\n   %s", n1);
     }
+}
+
+void clrscr(void)
+{
+#if defined(_WIN32) || defined(_WIN64)
+    system("cls");
+#else
+    system("clear");
+#endif
 }
